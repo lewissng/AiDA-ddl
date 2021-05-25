@@ -1,24 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+// components
+import DropDownList from './components/DropDownList'
+// styles
+import './App.scss';
 
-function App() {
+export type ListItemType = {
+  name: string;
+}
+
+const countriesList: ListItemType[] = [
+  {
+    name: 'Australia',
+  },
+  {
+    name: 'Bahrain',
+  },
+  {
+    name: 'China',
+  },
+  {
+    name: 'Denmark',
+  },
+  {
+    name: 'Finland',
+  }
+];
+
+const App = () => {
+
+  const [boxIsChecked, setChecked] = useState(new Map());
+
+  const handleClick = (event: Event) => {
+    // mutate the current Map
+    boxIsChecked.set((event.target as HTMLInputElement).value, (event.target as HTMLInputElement).checked)
+    // update the state by creating a new Map
+    setChecked(new Map(boxIsChecked));
+    console.log("checkedItems: ", boxIsChecked);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <DropDownList list={countriesList} handleClick={handleClick} checked={boxIsChecked} />
+      <h1>Countries checkboxes</h1>
     </div>
   );
 }
